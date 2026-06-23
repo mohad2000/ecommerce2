@@ -33,6 +33,7 @@ export const createOrder = async (req, res) => {
             shippingCost,
             totalPrice,
             orderStatus,
+            
             user: req.user.id,
             paidAt: Date.now()
         })
@@ -44,7 +45,7 @@ export const createOrder = async (req, res) => {
             })
         }
 
-        const updatedStocks = await Promise.all(orderItems.map(item => updatestock(item.product, item.quantity)));
+        const updatedStocks = await Promise.all(orderItems.map(item => updateStock(item.product, item.quantity)));
 
         return res.status(200).json({
             success: true,
@@ -56,7 +57,7 @@ export const createOrder = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: "Internal server error: " + err.message
+            message: "Internal server error: " + error.message
 
         })
     }
@@ -163,7 +164,7 @@ export const updateOrderStatus = async (req, res) => {
             });
         }
 
-        if (req.body.status === "Delivered") {
+        if (order.orderStatus === "Delivered") {
             // await Promise.all(order.orderItems.map(item =>
             //     updateStock(item.product, item.quantity)
             // ));
@@ -172,6 +173,10 @@ export const updateOrderStatus = async (req, res) => {
                 message: "This order has already been delivered"
             })
         }
+
+        if (req.body.status === "Delivered") {
+    order.deliveredAt = Date.now();
+}
 
         order.orderStatus = req.body.status
 

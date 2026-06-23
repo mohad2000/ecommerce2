@@ -5,18 +5,25 @@ import User from "../models/userModel.js"
 import { sendToken } from "../util/jwtToken.js";
 import { sendEmail } from "../util/sendMail.js";
 import crypto from "crypto"
+import cloudinary from "../util/cloudinary.js"
 
 export const registerUserContrller = async (req, res) => {
     try {
-        const {name, email, password} = req.body;
+        const {name, email, password, avatar } = req.body;
+
+        if (!avatar) {
+            return res.status(400).json({ success: false, message: "Profile picture is required" });
+        }
+
+        const uploaded = await cloudinary.uploader.upload(avatar, { folder: "avatars" });
 
         const user = await User.create({
             name,
             email,
             password,
-            profile : {
-                public_id : "id",
-                url : "url"
+            profile: {
+                public_id: uploaded.public_id,
+                url: uploaded.secure_url,
             }
         })
 
@@ -112,6 +119,29 @@ export const userProfileController = async (req, res) => {
    }
 }
 
+export const getUserRole = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+
+       if(!user){
+        return res.status(400).json({
+            success: false,
+            message: "User not found"
+        })
+     }
+     return res.status(200).json({
+        success: true,
+        user
+     })
+
+    } catch (error) {
+         return res.status(500).json({
+        success: false,
+        error
+    })
+    }
+}
+
 export const updateUserProfileController = async (req, res) => {
     try {
         // let user = await User.findById(req.params.id);
@@ -128,7 +158,22 @@ export const updateUserProfileController = async (req, res) => {
         //     runValidators: true
         // })
 
-        let user = await User.findByIdAndUpdate(req.user._id, req.body, {
+        const { name, email, avatar } = req.body;
+        const updateData = { name, email };
+
+        if (avatar) {
+            const existingUser = await User.findById(req.user._id);
+            if (existingUser?.profile?.public_id) {
+                await cloudinary.uploader.destroy(existingUser.profile.public_id);
+            }
+            const uploaded = await cloudinary.uploader.upload(avatar, { folder: "avatars" });
+            updateData.profile = {
+                public_id: uploaded.public_id,
+                url: uploaded.secure_url,
+            };
+        }
+
+        const user = await User.findByIdAndUpdate(req.user._id, updateData, {
             new : true,
             runValidators : true
         })
@@ -167,7 +212,8 @@ export const deleteUserProfileController = async (req, res) => {
 
         // user = await User.findByIdAndDelete(req.params.id);
         
-        let user = await User.findByIdAndDelete(req.user._id)
+        let user = await User.findByIdAndDelete(req.user._id);
+
         if(!user){
             return res.status(400).json({
                 success: false,
@@ -220,8 +266,8 @@ export const resetPasswordRequestController = async (req, res) => {
         }
 
         let resetToken = user.getResetPasswordToken();
-        console.log(resetToken);
-        user.save({validateBeforeSave : false})
+       
+        await user.save({validateBeforeSave : false})
         
         const restPasswordUrl = `http://localhost:5173/reset-password/${resetToken}`
         const message = `if you want to reset your password click on above link ${restPasswordUrl}`;
@@ -249,6 +295,7 @@ export const resetPasswordRequestController = async (req, res) => {
 export const getAllUsersController = async (req, res) => {
     try {
         const users = await User.find();
+
         if(!users){
             return res.status(400).json({
                 success: false,
@@ -270,16 +317,11 @@ export const getAllUsersController = async (req, res) => {
 }
 export const resetPasswordController = async (req, res) => {
     try {
-        console.log(req.params.token);
+       
         const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest("hex")
         const user = await User.findOne({
             resetPasswordToken, 
             resetPasswordExpire : { $gt: Date.now()}
-        })
-
-        return res.status(200).json({
-            success: true,
-            message: "reset password successfully"
         })
 
         if(!user){
@@ -296,8 +338,8 @@ export const resetPasswordController = async (req, res) => {
                 success: false,
                 message: "Password dosnt match to each other"
             })
-        }
-
+        } 
+         
         user.password = password;
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
@@ -307,33 +349,6 @@ export const resetPasswordController = async (req, res) => {
         sendToken(user, 200, res)
 
     } catch (error) {        
-        return res.status(500).json({
-            success: false,
-            message: "Server error"
-        })
-    }
-}
-
-export const combinDataController = async (req, res) =>{
-    try {
-        const users = await User.find();
-        const products = await Product.find();
-        const orders = await Order.find();
-
-        let total = 0;
-        orders.forEach((order) => {
-            total = total + order.totalPrice
-        })
-
-        return res.status(200).json({
-            success: true,
-            user : users.length,
-            product : products.length,
-            order : orders.length,
-            total
-        })
-
-    } catch (error) {
         return res.status(500).json({
             success: false,
             error
@@ -403,3 +418,66 @@ export const updatePasswordController = async (req, res) => {
         });
     }
 };
+
+export const combinDataController = async (req, res) =>{
+    try {
+        const users = await User.find();
+        const products = await Product.find();
+        const orders = await Order.find();
+
+        let total = 0;
+        orders.forEach((order) => {
+            total = total + order.totalPrice
+        })
+
+        return res.status(200).json({
+            success: true,
+            user : users.length,
+            product : products.length,
+            order : orders.length,
+            total
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error
+        })
+    }
+}
+
+
+
+export const changeUserRole = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        const { role } = req.body;
+        if (!role) {
+            return res.status(400).json({
+                success: false,
+                message: "Role is required"
+            });
+        }
+
+        user.role = role;
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: `User role updated to ${role}`,
+            user
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error
+        });
+    }
+}

@@ -52,10 +52,14 @@ const productSchema = new mongoose.Schema({
             rating: {type: Number, required: true},
         },
     ],
+    user : {
+      type : mongoose.Schema.ObjectId,
+      ref : "User"
+    },
 
 },{
-    timestamps: true
-})
+    timestamps: true,
+});
 
 
 const Product = mongoose.model("Product", productSchema);

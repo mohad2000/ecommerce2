@@ -1,6 +1,6 @@
 import express from "express";
 
-import { combinDataController, deleteUserProfileController, getAllUsersController, loginUserController, logoutUser, registerUserContrller, resetPasswordController, resetPasswordRequestController, updatePasswordController, updateUserProfileController, userProfileController } from "../controllers/userController.js";
+import { changeUserRole, combinDataController, deleteUserProfileController, getAllUsersController, getUserRole, loginUserController, logoutUser, registerUserContrller, resetPasswordController, resetPasswordRequestController, updatePasswordController, updateUserProfileController, userProfileController } from "../controllers/userController.js";
 import { isAdmin, isAuthenticatedUser } from "../util/userAuth.js";
 
 
@@ -18,5 +18,7 @@ userRouter.post("/reset-password-request", resetPasswordRequestController)
 userRouter.put("/reset-password/:token", resetPasswordController)
 userRouter.put("/update-password", isAuthenticatedUser, updatePasswordController)
 userRouter.get("/combin-data", isAuthenticatedUser, combinDataController)
+userRouter.get("/get-user-role", isAuthenticatedUser, getUserRole)
+userRouter.put("/change-user-role/:id", isAuthenticatedUser, isAdmin("admin"), changeUserRole)
 
 export default userRouter

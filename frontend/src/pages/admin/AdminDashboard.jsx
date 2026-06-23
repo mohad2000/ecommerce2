@@ -17,38 +17,45 @@ import cookie from "js-cookie";
 const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [products, setProducts] = useState([]);
-
+  const [user, setUser] = useState();
+  
   const navigate = useNavigate();
   const location = useLocation();
 
   const token = cookie.get("token");
 
   useEffect(() => {
-    // const checkAdmin = async () => {
-    //   try {
-    //     if (!token) {
-    //       navigate("/login");
-    //       return;
-    //     }
+    const checkAdmin = async () => {
+      try {
+        if (!token) {
+          navigate("/login");
+          return;
+        }
 
-    //     const response = await axios.get(
-    //       "http://localhost:8000/api/v1/users/get-user-role",
-    //       {
-    //         withCredentials: true,
-    //       }
-    //     );
+        const response = await axios.get(
+          "http://localhost:8000/api/v1/users/get-user-role",
+          {
+            withCredentials: true,
+              headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          } 
+        );
 
-    //     const role = response.data.user.role;
+        const role = response.data.user.role;
 
-    //     if (role !== "admin") {
-    //       navigate("/login");
-    //     }
-    //   } catch (error) {
-    //     navigate("/login");
-    //   }
-    // };
+        if (role !== "admin") {
+           toast.error("You are not authorized");
+          navigate("/login");
+        }
 
-    // checkAdmin();
+      } catch (error) {
+        toast.error("Authentication failed");
+        navigate("/login");
+      }
+    };
+
+    checkAdmin();
   }, []);
 
   useEffect(() => {
@@ -110,7 +117,7 @@ const AdminDashboard = () => {
         {/* Logo */}
         <div className="flex items-center justify-between px-6 py-6 border-b border-slate-800">
           <div>
-            <h1 className="text-2xl font-bold">Daraz</h1>
+            <h1 className="text-2xl font-bold">Dukkan</h1>
             <p className="text-xs text-slate-400 mt-1">
               Admin Dashboard
             </p>

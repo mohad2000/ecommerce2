@@ -93,12 +93,10 @@ const orderSchema = new mongoose.Schema ({
 
     paidAt : {
         type : Date,
-        required : true
     },
 
     deliveredAt : {
         type : Date,
-        required : true
     }
     
 },{

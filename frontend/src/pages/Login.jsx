@@ -35,11 +35,19 @@ const Login = () => {
 
       const token = res.data.token
       Cookies.set("token", token, {
-        expires : 7
+        expires: 7
       })
 
-    toast.success(res.data.message)
-    navigate("/");
+      const user = res.data.user; // مهم جدًا إذا السيرفر يرجعه
+
+      toast.success(res.data.message)
+
+      // 👇 هنا التوجيه الصحيح
+      if (user?.role === "admin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/");
+      }
 
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed ❌");
@@ -104,8 +112,8 @@ const Login = () => {
 
             <div className="flex justify-end">
               <p className="text-sm text-gray-500 mt-1 cursor-pointer hover:underline">
-             <Link to="/forget-password-request"> Forgot password ? </Link>
-            </p>
+                <Link to="/forget-password-request"> Forgot password ? </Link>
+              </p>
             </div>
           </div>
 
