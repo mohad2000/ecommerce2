@@ -22,7 +22,11 @@ const DashboardHome = () => {
     const getAllProducts = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/v1/products/get-all-products`
+          `${import.meta.env.VITE_API_URL}/api/v1/products/get-all-products`,
+          {
+            withCredentials: true
+          }
+
         );
 
         setProducts(response.data.products);
@@ -34,7 +38,7 @@ const DashboardHome = () => {
     const getCombineStats = async () => {
       try {
         const response = await axios.get(
-         `${import.meta.env.VITE_API_URL}/api/v1/users/combin-data`,
+          `${import.meta.env.VITE_API_URL}/api/v1/users/combin-data`,
           {
             withCredentials: true,
           }
@@ -70,7 +74,7 @@ const DashboardHome = () => {
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
-          "Failed to delete product"
+        "Failed to delete product"
       );
     }
   };

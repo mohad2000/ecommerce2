@@ -29,7 +29,10 @@ const fetchProducts = async () => {
         setLoading(true);
 
         const { data } = await axios.get(
-           `${import.meta.env.VITE_API_URL}/api/v1/products/get-all-products?page=${currentPage}&keyword=${keyword}`
+           `${import.meta.env.VITE_API_URL}/api/v1/products/get-all-products?page=${currentPage}&keyword=${keyword}`,
+           {
+            withCredentials: true
+          }
         );
 
         setProducts(data.products || []);

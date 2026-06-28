@@ -51,9 +51,12 @@ const UpdateProduct = () => {
     const getProduct = async () => {
       try {
         console.log("images before send:", images);
-        
+
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/v1/products/product-detail/${id}`
+          `${import.meta.env.VITE_API_URL}/api/v1/products/product-detail/${id}`,
+          {
+            withCredentials: true
+          }
         );
         const p = response.data.product;
 
@@ -78,20 +81,20 @@ const UpdateProduct = () => {
     e.preventDefault();
 
     console.log("Current Images:", images);
-    
-    try {
-      
-      const data = {
-      title,
-      price,
-      description,
-      stock,
-      category,
-    };
 
-     if (images.length > 0) {
-      data.images = images;
-    }
+    try {
+
+      const data = {
+        title,
+        price,
+        description,
+        stock,
+        category,
+      };
+
+      if (images.length > 0) {
+        data.images = images;
+      }
 
       const response = await axios.put(
         `${import.meta.env.VITE_API_URL}/api/v1/products/update-product/${id}`,
@@ -99,7 +102,7 @@ const UpdateProduct = () => {
         { withCredentials: true }
       );
 
-     
+
       toast.success(response.data.message);
       navigate("/admin-dashboard");
 

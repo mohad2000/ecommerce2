@@ -36,9 +36,6 @@ const AdminDashboard = () => {
           `${import.meta.env.VITE_API_URL}/api/v1/users/get-user-role`,
           {
             withCredentials: true,
-              headers: {
-            Authorization: `Bearer ${token}`,
-          },
           } 
         );
 

@@ -15,7 +15,7 @@ const Profile = () => {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/users/user-profile`, {
                 withCredentials: true
             })
-            console.log(res);
+            
 
             setUser(res.data.user)
 

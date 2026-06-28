@@ -19,7 +19,10 @@ const ForgetPasswordRequest = () => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/users/reset-password-request`,
-        formData
+        formData,
+        {
+            withCredentials: true
+          }
       );
 
       toast.success(response.data.message);

@@ -15,8 +15,14 @@ const ResetPassword = () => {
         e.preventDefault();
         const resetPassword = async () => {
             try {
-                const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/v1/users/reset-password/${token}`, formData);
-               
+                const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/v1/users/reset-password/${token}`,
+                    formData,
+                    {
+            withCredentials: true
+          }
+
+                );
+
                 toast.success(response.data.message)
                 navigate("/login")
             } catch (error) {
