@@ -30,16 +30,15 @@ const Login = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/users/login-user`,
-         {
+        formData, 
+        {
                 withCredentials: true
-            },
-        formData
+            }
+        
       );
 
       const token = res.data.token
-      Cookies.set("token", token, {
-        expires: 7
-      })
+      
 
       const user = res.data.user; // مهم جدًا إذا السيرفر يرجعه
 

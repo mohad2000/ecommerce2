@@ -61,22 +61,22 @@ const Signup = () => {
 
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/users/register-user`,
-         {
-                withCredentials: true
-            },
-        {
+          {
           name: formData.name,
           email: formData.email,
           password: formData.password,
           avatar: avatarBase64,
-        }
+        },
+        {
+                withCredentials: true
+            }
       );
 
       const token = res.data.token;
 
-      Cookies.set("token", token, {
-        expires: 7,
-      });
+      // Cookies.set("token", token, {
+      //   expires: 7,
+      // });
 
       toast.success("User SignUp Successfully");
 
