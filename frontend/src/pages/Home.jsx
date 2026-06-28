@@ -50,6 +50,7 @@ const Home = () => {
     });
   }, [products, search, minPrice, maxPrice, category]);
 
+  
   return (
     <div>
       <HeroSection />

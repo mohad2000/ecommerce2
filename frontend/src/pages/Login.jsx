@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie"
 import { toast } from "react-toastify";
 
@@ -47,6 +47,10 @@ const Login = () => {
         navigate("/admin-dashboard");
       } else {
         navigate("/");
+      }
+
+      if (!user || user.role !== "admin") {
+        return <Navigate to="/" />;
       }
 
     } catch (err) {

@@ -84,6 +84,7 @@ const Signup = () => {
       } else {
         navigate("/");
       }
+      
     } catch (err) {
       toast.error(err.response?.data?.message || "Signup failed ❌");
     } finally {

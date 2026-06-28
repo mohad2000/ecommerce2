@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 const Contact = () => {
+
+    console.log(import.meta.env.VITE_API_URL);
 const [formData, setFormData] = useState({
 name: "",
 email: "",
