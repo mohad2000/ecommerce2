@@ -22,7 +22,7 @@ const DashboardHome = () => {
     const getAllProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/products/get-all-products"
+          `${import.meta.env.VITE_API_URL}/api/v1/products/get-all-products`
         );
 
         setProducts(response.data.products);
@@ -34,7 +34,7 @@ const DashboardHome = () => {
     const getCombineStats = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/users/combin-data",
+         `${import.meta.env.VITE_API_URL}/api/v1/users/combin-data`,
           {
             withCredentials: true,
           }
@@ -56,7 +56,7 @@ const DashboardHome = () => {
   const deleteProduct = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:8000/api/v1/products/delete-product/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/products/delete-product/${id}`,
         {
           withCredentials: true,
         }

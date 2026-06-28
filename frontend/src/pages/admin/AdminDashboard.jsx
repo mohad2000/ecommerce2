@@ -33,7 +33,7 @@ const AdminDashboard = () => {
         }
 
         const response = await axios.get(
-          "http://localhost:8000/api/v1/users/get-user-role",
+          `${import.meta.env.VITE_API_URL}/api/v1/users/get-user-role`,
           {
             withCredentials: true,
               headers: {
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
     const getAllProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/products/get-all-products"
+          `${import.meta.env.VITE_API_URL}/api/v1/products/get-all-products`
         );
 
         setProducts(response.data.products);

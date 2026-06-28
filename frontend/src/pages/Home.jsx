@@ -19,7 +19,7 @@ const Home = () => {
       try {
         setLoading(true);
 
-        const response = await axios.get(`http://localhost:8000/api/v1/products/get-all-products?page=${currentPage}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/products/get-all-products?page=${currentPage}`);
         setProducts(response.data.products || []);
 
         setTotalPages(response.data.totalPages);

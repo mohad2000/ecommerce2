@@ -15,7 +15,7 @@ const UpdateProfile = () => {
 
     const getUserProfile = async () => {
         try {
-            const response = await axios.get("http://localhost:8000/api/v1/users/user-profile", {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/users/user-profile`, {
                 withCredentials: true
             });
             const userData = response.data.user;
@@ -46,7 +46,7 @@ const UpdateProfile = () => {
             if (avatarBase64) payload.avatar = avatarBase64;
 
             await axios.put(
-                "http://localhost:8000/api/v1/users/update-profile",
+                `${import.meta.env.VITE_API_URL}/api/v1/users/update-profile`,
                 payload,
                 { withCredentials: true }
             );

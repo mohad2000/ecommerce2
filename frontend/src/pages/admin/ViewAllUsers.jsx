@@ -9,7 +9,7 @@ const ViewAllUsers = () => {
     const getAllUsers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/users/get-all-users",
+         `${import.meta.env.VITE_API_URL}/api/v1/users/get-all-users`,
           {
             withCredentials: true,
           }
@@ -32,7 +32,7 @@ const ViewAllUsers = () => {
         /* eslint-disable */
       }
       const response = await axios.put(
-        `http://localhost:8000/api/v1/users/change-user-role/${userId}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/users/change-user-role/${userId}`,
         {
           role: newRole,
         },

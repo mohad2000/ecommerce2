@@ -12,7 +12,7 @@ const Profile = () => {
 
     const getUserProfile = async () => {
         try {
-            const res = await axios.get("http://localhost:8000/api/v1/users/user-profile", {
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/users/user-profile`, {
                 withCredentials: true
             })
             console.log(res);
@@ -46,7 +46,7 @@ const Profile = () => {
                             user?.profile?.url
                                 ? user.profile.url.startsWith("http")
                                     ? user.profile.url
-                                    : `http://localhost:8000/${user.profile.url}`
+                                    : `${import.meta.env.VITE_API_URL}/${user.profile.url}`
                                 : "https://via.placeholder.com/150"
                         }
                         alt="profile"

@@ -41,7 +41,7 @@ const PaymentForm = ({ total, cartItems, shippingInfo, onSuccess }) => {
 
     try {
       const { data } = await axios.post(
-        'http://localhost:8000/api/v1/payment/create-payment-intent',
+        `${import.meta.env.VITE_API_URL}/api/v1/payment/create-payment-intent`,
         { amount: total },
         { withCredentials: true }
       )
@@ -62,7 +62,7 @@ const PaymentForm = ({ total, cartItems, shippingInfo, onSuccess }) => {
         }))
 
         await axios.post(
-          'http://localhost:8000/api/v1/orders/create-order',
+          `${import.meta.env.VITE_API_URL}/api/v1/orders/create-order`,
           {
             orderItems,
             shippingInfo,

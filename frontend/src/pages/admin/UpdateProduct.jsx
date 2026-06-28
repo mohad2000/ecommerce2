@@ -53,7 +53,7 @@ const UpdateProduct = () => {
         console.log("images before send:", images);
         
         const response = await axios.get(
-          `http://localhost:8000/api/v1/products/product-detail/${id}`
+          `${import.meta.env.VITE_API_URL}/api/v1/products/product-detail/${id}`
         );
         const p = response.data.product;
 
@@ -94,7 +94,7 @@ const UpdateProduct = () => {
     }
 
       const response = await axios.put(
-        `http://localhost:8000/api/v1/products/update-product/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/products/update-product/${id}`,
         data,
         { withCredentials: true }
       );

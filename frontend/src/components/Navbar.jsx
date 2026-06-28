@@ -27,7 +27,7 @@ const Navbar = ({ cartCount = 0 }) => {
     const getProfile = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:8000/api/v1/users/user-profile",
+          `${import.meta.env.VITE_API_URL}/api/v1/users/user-profile`,
           { withCredentials: true }
         );
         setUser(data.user);
@@ -42,7 +42,7 @@ const Navbar = ({ cartCount = 0 }) => {
   const logout = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/v1/users/logout",
+        `${import.meta.env.VITE_API_URL}/api/v1/users/logout`,
         { withCredentials: true }
       );
 

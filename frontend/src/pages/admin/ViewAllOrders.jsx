@@ -10,7 +10,7 @@ const ViewAllOrders = () => {
     const getAllOrders = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/orders/all-orders",
+          `${import.meta.env.VITE_API_URL}/api/v1/orders/all-orders`,
           {
             withCredentials: true,
           }
@@ -29,7 +29,7 @@ const ViewAllOrders = () => {
     setLoadingId(orderId);
     try {
       await axios.put(
-        `http://localhost:8000/api/v1/orders/update-order-status/${orderId}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/orders/update-order-status/${orderId}`,
         { status: newStatus },
         { withCredentials: true }
       );
