@@ -4,50 +4,43 @@ import User from "../models/userModel.js"
 export const isAuthenticatedUser = async (req, res, next) => {
     try {
 
+          
+        const {token} = req.cookies;
 
-        const token = req.cookies?.token;;
-
-
-        if (!token) {
-            return res.status(401).json({
+        if(!token){
+            return res.status(400).json({
                 success: false,
-                message: "Please login first"
-            });
+                message: "plz login first"
+            })
         }
-
+      
+        
 
         const decodedData = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        console.log(decodedData);
 
-        const user = await User.findById(decodedData.id);
+        req.user = await User.findById(decodedData.id);
+        next(); //middlewares
 
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                message: "User not found"
-            });
-        }
-
-        req.user = user;
-        next();
     } catch (error) {
-          return res.status(401).json({
+        return res.status(500).json({
             success: false,
-            message: "Invalid token"
-        });
+            error
+        })    
     }
 }
 
 export const isAdmin = (...roles) => {
 
     return (req, res, next) => {
-        if (!roles.includes(req.user.role)) {
+        if(!roles.includes(req.user.role)){
             return res.status(400).json({
                 success: false,
                 message: "You are not admin, not allowed to access this"
             })
         }
         console.log(roles);
-
+        
         next()
     }
 }
