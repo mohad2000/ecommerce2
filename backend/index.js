@@ -25,7 +25,7 @@ app.use(express.urlencoded({
 app.use(cookieParser())
 app.set("query parser", (str) => qs.parse(str));
 
-Connection() 
+await Connection() 
 
 
 app.use("/api/v1/products", productsRouter);
