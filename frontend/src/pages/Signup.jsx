@@ -61,6 +61,9 @@ const Signup = () => {
 
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/users/register-user`,
+         {
+                withCredentials: true
+            },
         {
           name: formData.name,
           email: formData.email,
@@ -84,7 +87,7 @@ const Signup = () => {
       } else {
         navigate("/");
       }
-      
+
     } catch (err) {
       toast.error(err.response?.data?.message || "Signup failed ❌");
     } finally {
