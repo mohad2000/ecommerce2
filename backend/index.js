@@ -33,11 +33,10 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/payment", paymentRouter)
 
-const port = process.env.PORT
+const port = process.env.PORT || 8000;
 
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log(`listening on port ${port}`);
-    
-})
+});
 
 //http://localhost:8000/api/v1/products/create-product
