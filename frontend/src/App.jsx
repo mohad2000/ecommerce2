@@ -20,7 +20,7 @@ import DashboardHome from "./pages/admin/DashboardHome";
 import ViewAllOrders from "./pages/admin/ViewAllOrders";
 import AddProduct from "./pages/admin/AddProduct";
 import UpdateProduct from "./pages/admin/UpdateProduct";
-import About from "./pages/about";
+import About from "./pages/About";
 import Products from "./pages/Products";
 import Contact from "./pages/Contact";
 
