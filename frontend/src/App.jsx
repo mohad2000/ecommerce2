@@ -13,7 +13,7 @@ import Profile from "./pages/Profile";
 import UpdateProfile from "./pages/UpdateProfile";
 import ChangePassword from "./pages/ChangePassword";
 import ForgetPasswordRequest from "./pages/ForgetPasswordRequest";
-import ResetPassword from "./pages/resetPassword";
+import ResetPassword from "./pages/ResetPassword";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ViewAllUsers from "./pages/admin/ViewAllUsers";
 import DashboardHome from "./pages/admin/DashboardHome";
