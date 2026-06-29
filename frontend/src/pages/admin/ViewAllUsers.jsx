@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const ViewAllUsers = () => {
   const [users, setUsers] = useState([]);
@@ -53,7 +54,7 @@ const ViewAllUsers = () => {
       );
     } catch (error) {
       
-       toast.error(error.response?.data?.message || "Failed to update role");
+       toast.error(error?.response?.data?.message || "Failed to update role");
     } finally {
       setLoadingId(null);
     }
@@ -130,9 +131,9 @@ const ViewAllUsers = () => {
               </thead>
 
               <tbody>
-                {users.map((user) => (
+                {users.map((user, index) => (
                   <tr
-                    key={user._id}
+                    key={index}
                     className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
                   >
                     <td className="px-6 py-5">

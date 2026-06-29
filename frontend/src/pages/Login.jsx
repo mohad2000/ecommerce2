@@ -38,6 +38,7 @@ const Login = () => {
       );
 
       const token = res.data.token
+      
       Cookies.set("token", token, {
         expires: 7
       })
