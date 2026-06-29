@@ -38,7 +38,9 @@ const Login = () => {
       );
 
       const token = res.data.token
-      
+      Cookies.set("token", token, {
+        expires: 7
+      })
 
       const user = res.data.user; // مهم جدًا إذا السيرفر يرجعه
 
